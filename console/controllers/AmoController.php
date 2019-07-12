@@ -73,8 +73,6 @@ class AmoController extends Controller
                 {
                     if($model->date == $deal->date && $model->manager == $deal->manager)
                     {
-//                        Debug::prn($model);
-//                        Debug::prn($deal);
                         $model->primary_contact += $deal->primary_contact;
                         $model->harmonization_of_contract += $deal->harmonization_of_contract;
                         $model->successfully_implemented += $deal->successfully_implemented;
