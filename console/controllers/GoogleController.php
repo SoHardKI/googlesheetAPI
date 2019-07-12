@@ -74,7 +74,7 @@ class GoogleController extends Controller
             $client->addScope('https://www.googleapis.com/auth/spreadsheets');
             $service = new Google_Service_Sheets($client);
             $spreadsheetId = $table; // ID таблицы
-            $spreadsheetName = "AmoCrmInfo"; // Название нашего листа
+            $spreadsheetName = "Лист1"; // Название нашего листа
 
             $values = [
                 ['Дата', 'Менеджеры', 'Новых сделок в воронке', 'Согласование договора', 'Успешно реализовано', 'Сумма оплат'],
