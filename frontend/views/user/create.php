@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\User */
 
 $this->title = 'Создание';
-$this->params['breadcrumbs'][] = ['label' => 'Аккаунты Amo CRM', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Аккаунты Amo CRM', 'url' => ['/']];
 $this->params['breadcrumbs'][] = $model->login;
 ?>
 <div class="user-create">
