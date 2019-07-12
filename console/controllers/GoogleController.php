@@ -66,7 +66,7 @@ class GoogleController extends Controller
     public static function FillingTable($table, $data)
     {
         try {
-            $googleAccountKeyFilePath = \Yii::getAlias('@homename/Project.json'); // Ключ который мы получили при регистрации
+            $googleAccountKeyFilePath = \Yii::getAlias('@app/../Project.json'); // Ключ который мы получили при регистрации
             putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $googleAccountKeyFilePath);
             $client = new Google_Client();
 

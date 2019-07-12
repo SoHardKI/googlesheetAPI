@@ -42,6 +42,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<action:\w+>' => 'user/<action>',
             ],
         ],
         'amocrm' => [
@@ -58,4 +59,5 @@ return [
         ],
     ],
     'params' => $params,
+    'defaultRoute' => 'user/index',
 ];
