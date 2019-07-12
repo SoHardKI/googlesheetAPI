@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw',
                     'value' => function($model)
                     {
-                        return Html::a('Создать таблицу', ['table', 'id'=> $model->id, 'view' => 'index'], ['class' => 'btn btn-success btn-xs']);
+                        return Html::a('Создать таблицу', ['table', 'id'=> $model->id, 'view' => 'view'], ['class' => 'btn btn-success btn-xs']);
                     }
             ],
             ['class' => 'yii\grid\ActionColumn'],

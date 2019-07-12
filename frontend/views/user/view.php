@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\User */
 
 $this->title = $model->login;
-$this->params['breadcrumbs'][] = ['label' => 'Аккаунты Amo Crm', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Аккаунты Amo Crm', 'url' => ['/']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
+        <?= Html::a('Список', ['index', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',

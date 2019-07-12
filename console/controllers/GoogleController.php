@@ -75,7 +75,41 @@ class GoogleController extends Controller
             $service = new Google_Service_Sheets($client);
             $spreadsheetId = $table; // ID таблицы
             $spreadsheetName = "AmoCrmInfo"; // Название нашего листа
-
+            //Удаление данных из таблицы
+//            $requests = [
+//                new Google_Service_Sheets_Request( [
+//                    'deleteDimension' => [
+//                        'range'          => [
+//                            'sheetId' => $table,
+//                            'startIndex' => 1,
+//                            'endIndex' => 50,
+//                            'dimension' => 'COLUMNS'
+//                        ]
+//                    ]
+//                ] )
+//            ];
+//            $batchUpdateRequest = new Google_Service_Sheets_BatchUpdateSpreadsheetRequest( [
+//                'requests' => $requests
+//            ] );
+//            $service->spreadsheets->batchUpdate( $spreadsheetId, $batchUpdateRequest );
+//
+//// Полное удаление строк
+//            $requests = [
+//                new Google_Service_Sheets_Request( [
+//                    'deleteDimension' => [
+//                        'range'          => [
+//                            'sheetId' => $table,
+//                            'startIndex' => 1,
+//                            'endIndex' => 5000,
+//                            'dimension' => 'ROWS'
+//                        ]
+//                    ]
+//                ] )
+//            ];
+//            $batchUpdateRequest = new Google_Service_Sheets_BatchUpdateSpreadsheetRequest( [
+//                'requests' => $requests
+//            ] );
+//            $service->spreadsheets->batchUpdate( $spreadsheetId, $batchUpdateRequest );
             $values = [
                 ['Дата', 'Менеджеры', 'Новых сделок в воронке', 'Согласование договора', 'Успешно реализовано', 'Сумма оплат'],
             ];
