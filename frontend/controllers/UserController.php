@@ -161,6 +161,7 @@ class UserController extends Controller
     public function actionTable($id, $view)
     {
         $model = $this->findModel($id);
+        GoogleController::ClearTable($model->table_id);
         $table = json_decode(AmoController::getTable($model->login, $model->hash, $model->subdomen));
         $link = GoogleController::FillingTable($model->table_id, $table);
         if($link)
@@ -184,10 +185,5 @@ class UserController extends Controller
             ]);
         }
         return $this->render('view', compact('model', 'provider'));
-    }
-
-    public function concatStr($data)
-    {
-        $new_arr = [];
     }
 }

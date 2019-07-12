@@ -66,7 +66,7 @@ class GoogleController extends Controller
     public static function FillingTable($table, $data)
     {
         try {
-            $googleAccountKeyFilePath = \Yii::getAlias('@app/../Project.json'); // Ключ который мы получили при регистрации
+            $googleAccountKeyFilePath = \Yii::getAlias('@common/config/Project.json'); // Ключ который мы получили при регистрации
             putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $googleAccountKeyFilePath);
             $client = new Google_Client();
 
@@ -75,41 +75,7 @@ class GoogleController extends Controller
             $service = new Google_Service_Sheets($client);
             $spreadsheetId = $table; // ID таблицы
             $spreadsheetName = "AmoCrmInfo"; // Название нашего листа
-            //Удаление данных из таблицы
-//            $requests = [
-//                new Google_Service_Sheets_Request( [
-//                    'deleteDimension' => [
-//                        'range'          => [
-//                            'sheetId' => $table,
-//                            'startIndex' => 1,
-//                            'endIndex' => 50,
-//                            'dimension' => 'COLUMNS'
-//                        ]
-//                    ]
-//                ] )
-//            ];
-//            $batchUpdateRequest = new Google_Service_Sheets_BatchUpdateSpreadsheetRequest( [
-//                'requests' => $requests
-//            ] );
-//            $service->spreadsheets->batchUpdate( $spreadsheetId, $batchUpdateRequest );
-//
-//// Полное удаление строк
-//            $requests = [
-//                new Google_Service_Sheets_Request( [
-//                    'deleteDimension' => [
-//                        'range'          => [
-//                            'sheetId' => $table,
-//                            'startIndex' => 1,
-//                            'endIndex' => 5000,
-//                            'dimension' => 'ROWS'
-//                        ]
-//                    ]
-//                ] )
-//            ];
-//            $batchUpdateRequest = new Google_Service_Sheets_BatchUpdateSpreadsheetRequest( [
-//                'requests' => $requests
-//            ] );
-//            $service->spreadsheets->batchUpdate( $spreadsheetId, $batchUpdateRequest );
+
             $values = [
                 ['Дата', 'Менеджеры', 'Новых сделок в воронке', 'Согласование договора', 'Успешно реализовано', 'Сумма оплат'],
             ];
@@ -181,4 +147,48 @@ class GoogleController extends Controller
 //        print_r($response);
     }
 
+    public static function ClearTable($table)
+    {
+        $googleAccountKeyFilePath = \Yii::getAlias('@common/config/Project.json'); // Ключ который мы получили при регистрации
+        putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $googleAccountKeyFilePath);
+        $client = new Google_Client();
+        $client->useApplicationDefaultCredentials();
+        $client->addScope('https://www.googleapis.com/auth/spreadsheets');
+        $service = new Google_Service_Sheets($client);
+        $spreadsheetId = $table; // ID таблицы
+        //Удаление данных из таблицы
+            $requests = [
+                new Google_Service_Sheets_Request( [
+                    'deleteDimension' => [
+                        'range'          => [
+                            'sheetId' => '0',
+                            'startIndex' => 1,
+                            'endIndex' => 15,
+                            'dimension' => 'COLUMNS'
+                        ]
+                    ]
+                ] )
+            ];
+            $batchUpdateRequest = new Google_Service_Sheets_BatchUpdateSpreadsheetRequest( [
+                'requests' => $requests
+            ] );
+            $service->spreadsheets->batchUpdate( $spreadsheetId, $batchUpdateRequest );
+// Полное удаление строк
+            $requests = [
+                new Google_Service_Sheets_Request( [
+                    'deleteDimension' => [
+                        'range'          => [
+                            'sheetId' => '0',
+                            'startIndex' => 1,
+                            'endIndex' => 2000,
+                            'dimension' => 'ROWS'
+                        ]
+                    ]
+                ] )
+            ];
+            $batchUpdateRequest = new Google_Service_Sheets_BatchUpdateSpreadsheetRequest( [
+                'requests' => $requests
+            ] );
+            $service->spreadsheets->batchUpdate( $spreadsheetId, $batchUpdateRequest );
+    }
 }
