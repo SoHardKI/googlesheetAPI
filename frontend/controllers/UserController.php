@@ -185,4 +185,9 @@ class UserController extends Controller
         }
         return $this->render('view', compact('model', 'provider'));
     }
+
+    public function concatStr($data)
+    {
+        $new_arr = [];
+    }
 }

@@ -40,9 +40,9 @@ class User extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'login' => 'Login',
+            'login' => 'Логин',
             'hash' => 'Hash',
-            'subdomen' => 'Subdomen',
+            'subdomen' => 'Поддомен',
             'table_id' => 'ID таблицы'
         ];
     }

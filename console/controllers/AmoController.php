@@ -16,6 +16,7 @@ class AmoController extends Controller
         $pervichniy_contract = '';
         $soglasovanie_dogovora = '';
         $uspeshno_realizovano = '';
+        $fl = 0;
         $models = [];
         $account = $amo->account;
         $users = $account->apiCurrent();
@@ -48,7 +49,7 @@ class AmoController extends Controller
             $deal->date = date("d-m-Y",$item['date_create']);
             foreach ($users['users'] as $user)
             {
-                if ($item['created_user_id'] == $user['id'])
+                if ($item['responsible_user_id'] == $user['id'])
                 {
                     $deal->manager = $user['name'];
                 }
@@ -66,7 +67,28 @@ class AmoController extends Controller
                 $deal->successfully_implemented++;
             }
             $deal->price = $item['price'];
-            array_push($models, $deal);
+            if($models)
+            {
+                foreach ($models as $model)
+                {
+                    if($model->date == $deal->date && $model->manager == $deal->manager)
+                    {
+//                        Debug::prn($model);
+//                        Debug::prn($deal);
+                        $model->primary_contact += $deal->primary_contact;
+                        $model->harmonization_of_contract += $deal->harmonization_of_contract;
+                        $model->successfully_implemented += $deal->successfully_implemented;
+                        $model->price += $deal->price;
+                        $fl = 1;
+                        break;
+                    }
+                }
+            }
+            if ($fl == 0)
+            {
+                array_push($models, $deal);
+            }
+            $fl = 0;
         }
 
         return json_encode($models,true);
