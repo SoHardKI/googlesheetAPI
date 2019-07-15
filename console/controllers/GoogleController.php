@@ -69,7 +69,6 @@ class GoogleController extends Controller
             $googleAccountKeyFilePath = \Yii::getAlias('@common/config/Project.json'); // Ключ который мы получили при регистрации
             putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $googleAccountKeyFilePath);
             $client = new Google_Client();
-
             $client->useApplicationDefaultCredentials();
             $client->addScope('https://www.googleapis.com/auth/spreadsheets');
             $service = new Google_Service_Sheets($client);
@@ -98,53 +97,28 @@ class GoogleController extends Controller
         }
     }
 
-    public function actionCreateTable()
+    public function actionCreateTable($title)
     {
+        $googleAccountKeyFilePath = \Yii::getAlias('@common/config/Project.json'); // Ключ который мы получили при регистрации
+        putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $googleAccountKeyFilePath);
         $client = new Google_Client();
 
         $client->useApplicationDefaultCredentials();
         $client->addScope('https://www.googleapis.com/auth/spreadsheets');
+        $client->setScopes(Google_Service_Sheets::SPREADSHEETS);
+        $client->setAccessType('offline');
+
         $service = new Google_Service_Sheets($client);
         $spreadsheet = new Google_Service_Sheets_Spreadsheet([
             'properties' => [
-                'title' => 'test_sheet'
+                'title' => $title
             ]
         ]);
         $spreadsheet = $service->spreadsheets->create($spreadsheet, [
             'fields' => 'spreadsheetId'
         ]);
+        $perm = new \Google_Service_Drive_Permission();
         printf("Spreadsheet ID: %s\n", $spreadsheet->spreadsheetId);
-//        $client = new Google_Client();
-//        $client->useApplicationDefaultCredentials();
-//        $client->addScope('https://www.googleapis.com/auth/spreadsheets');
-//        $service = new Google_Service_Sheets($client);
-//        $private_key  = file_get_contents(\Yii::getAlias('@app/../Project.json'));
-//        $client_email = 'google@project-246308.iam.gserviceaccount.com';
-//        $scopes       = implode(' ', ["https://www.googleapis.com/auth/drive"]);
-//
-//        $credentials =  $client->setAuthConfig(array(
-//            'type' => 'service_accaunt',
-//            'client_email' => $client_email,
-//            'client_id' => '104874705327663944963',
-//            'client_secret' => $private_key,
-//        ));
-//        // tried once with additional constructor params:
-//        // $privateKeyPassword = 'notasecret',
-//        // $assertionType = 'http://oauth.net/grant_type/jwt/1.0/bearer',
-//        // $sub = 'myMail@gmail.com
-//
-//        $client = new \Google_Client();
-//        $googleAccountKeyFilePath = \Yii::getAlias('@app/../Project.json'); // Ключ который мы получили при регистрации
-//        putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $googleAccountKeyFilePath);
-////        $client->setAssertionCredentials($credentials);
-////        if ($client->getAuth()->isAccessTokenExpired()) {
-////            $client->getAuth()->refreshTokenWithAssertion();
-////        }
-//        $service = new \Google_Service_Sheets($client);
-//        $newSheet = new \Google_Service_Sheets_Spreadsheet();
-//        $newSheet->setSpreadsheetId('34534534'); // <- hardcoded for test
-//        $response = $service->spreadsheets->create($newSheet);
-//        print_r($response);
     }
 
     public static function ClearTable($table)
