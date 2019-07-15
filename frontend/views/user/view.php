@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'login',
             'hash',
             'subdomen',
-            'table_id',
+            'gmail',
         ],
     ]) ?>
 

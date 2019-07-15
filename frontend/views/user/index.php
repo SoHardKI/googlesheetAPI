@@ -27,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'login',
             'subdomen',
+            'gmail',
             [
                     'label' => 'Создать таблицу GoogleSheet',
                     'format' => 'raw',

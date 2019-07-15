@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'subdomen')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'table_id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'gmail')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>

@@ -11,6 +11,7 @@ use Yii;
  * @property string $login
  * @property string $hash
  * @property string $subdomen
+ * @property string $gmail
  */
 class User extends \yii\db\ActiveRecord
 {
@@ -28,8 +29,8 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['login', 'hash', 'subdomen','table_id'], 'required'],
-            [['login', 'hash', 'subdomen','table_id'], 'string', 'max' => 255],
+            [['login', 'hash', 'subdomen','gmail'], 'required'],
+            [['login', 'hash', 'subdomen','gmail'], 'string', 'max' => 255],
         ];
     }
 
@@ -43,7 +44,8 @@ class User extends \yii\db\ActiveRecord
             'login' => 'Логин',
             'hash' => 'Hash',
             'subdomen' => 'Поддомен',
-            'table_id' => 'ID таблицы'
+            'table_id' => 'ID таблицы',
+            'gmail' => 'Аккаунт Google'
         ];
     }
 }

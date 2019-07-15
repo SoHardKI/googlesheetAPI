@@ -80,7 +80,10 @@ class UserController extends Controller
     {
         $model = new User();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $table = GoogleController::CreateTable($model->login, $model->gmail);
+            $model->table_id = $table;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -107,25 +110,6 @@ class UserController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
-    }
-
-    public function actionAdd($id)
-    {
-        $model = $this->findModel($id);
-        $table = json_decode(AmoController::getTable($model->login, $model->hash, $model->subdomen));
-
-        $link = GoogleController::FillingTable($model->table_id, $table);
-        if($link)
-        {
-            Yii::$app->session->setFlash('success', 'Данные занесены в таблицу.');
-            Yii::$app->session->setFlash('info',  Html::a('Посмотреть данные', $link));
-        }
-
-        $provider = new ArrayDataProvider([
-            'allModels' => $table,
-        ]);
-
-        return $this->render('view', compact('model', 'provider'));
     }
 
     /**

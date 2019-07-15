@@ -13,6 +13,7 @@ use Google_Service_Sheets_Request;
 use Google_Service_Sheets_Spreadsheet;
 use Google_Service_Sheets_ValueRange;
 use yii\console\Controller;
+use yii\db\Exception;
 use yii\helpers\Url;
 
 class GoogleController extends Controller
@@ -76,7 +77,7 @@ class GoogleController extends Controller
             $client->addScope('https://www.googleapis.com/auth/spreadsheets');
             $service = new Google_Service_Sheets($client);
             $spreadsheetId = $table; // ID таблицы
-            $spreadsheetName = "Лист1"; // Название нашего листа
+            $spreadsheetName = "Sheet1"; // Название нашего листа
 
             $values = [
                 ['Дата', 'Менеджеры', 'Новых сделок в воронке', 'Согласование договора', 'Успешно реализовано', 'Сумма оплат'],
@@ -100,27 +101,33 @@ class GoogleController extends Controller
         }
     }
 
-    public function actionCreateTable($title)
+    public static function CreateTable($title, $mail)
     {
         $googleAccountKeyFilePath = \Yii::getAlias('@common/config/Project.json'); // Ключ который мы получили при регистрации
         putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $googleAccountKeyFilePath);
         $client = new Google_Client();
-
         $client->useApplicationDefaultCredentials();
         $client->addScope('https://www.googleapis.com/auth/spreadsheets');
         $client->setScopes(Google_Service_Sheets::SPREADSHEETS);
         $client->setAccessType('offline');
-
+        $client->setScopes(
+            ['https://www.googleapis.com/auth/spreadsheets',
+                'https://www.googleapis.com/auth/drive']);
         $service = new Google_Service_Sheets($client);
-        $spreadsheet = new Google_Service_Sheets_Spreadsheet([
+        $drive = new Google_Service_Drive($client);
+
+        $ss = $service->spreadsheets->create(new Google_Service_Sheets_Spreadsheet([
             'properties' => [
                 'title' => $title
             ]
-        ]);
-        $spreadsheet = $service->spreadsheets->create($spreadsheet, [
-            'fields' => 'spreadsheetId'
-        ]);
-        printf("Spreadsheet ID: %s\n", 'https://docs.google.com/spreadsheets/d/' . $spreadsheet->spreadsheetId . '/edit#gid=0');
+        ]));
+        $newPermission = new Google_Service_Drive_Permission();
+        $newPermission->setEmailAddress($mail);
+        $newPermission->setType('user');
+        $newPermission->setRole('writer');
+        $optParams = array('sendNotificationEmail' => false);
+        $drive->permissions->create($ss->spreadsheetId,$newPermission,$optParams);
+        return $ss->spreadsheetId;
     }
 
     public static function ClearTable($table)
