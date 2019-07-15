@@ -4,6 +4,9 @@ namespace console\controllers;
 
 use common\classes\Debug;
 use Google_Client;
+use Google_Service_Drive;
+use Google_Service_Drive_Permission;
+use Google_Service_Exception;
 use Google_Service_Sheets;
 use Google_Service_Sheets_BatchUpdateSpreadsheetRequest;
 use Google_Service_Sheets_Request;
@@ -18,8 +21,8 @@ class GoogleController extends Controller
     {
         $client = new Google_Client();
         $client->setApplicationName('Google Sheets API PHP Quickstart');
-        $client->setScopes(Google_Service_Sheets::SPREADSHEETS_READONLY);
-        $client->setAuthConfig('Project.json');
+        $client->setScopes(Google_Service_Sheets::SPREADSHEETS);
+        $client->setAuthConfig(\Yii::getAlias('@common/config/Project.json'));
         $client->setAccessType('offline');
         $client->setPrompt('select_account consent');
 
@@ -117,8 +120,7 @@ class GoogleController extends Controller
         $spreadsheet = $service->spreadsheets->create($spreadsheet, [
             'fields' => 'spreadsheetId'
         ]);
-        $perm = new \Google_Service_Drive_Permission();
-        printf("Spreadsheet ID: %s\n", $spreadsheet->spreadsheetId);
+        printf("Spreadsheet ID: %s\n", 'https://docs.google.com/spreadsheets/d/' . $spreadsheet->spreadsheetId . '/edit#gid=0');
     }
 
     public static function ClearTable($table)
